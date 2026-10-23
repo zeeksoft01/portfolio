@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EazyCash | Web Developer</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* =========================================================
+     COLORS — change these to restyle the whole site
+     ========================================================= */
+  :root {
+    --bg: #0b0f17;
+    --card: #131a26;
+    --line: #222c3d;
+    --text: #e8edf5;
+    --muted: #8b97ab;
+    --accent: #22d3a6;     /* main green */
+    --accent-2: #3b82f6;   /* blue */
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+  a { color: inherit; text-decoration: none; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+  h1, h2, h3 { font-family: 'Space Grotesk', sans-serif; line-height: 1.15; }
+
+  /* ---------- NAVBAR ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(11, 15, 23, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-inner { display: flex; justify-content: space-between; align-items: center; height: 64px; }
+  .logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; font-size: 1.3rem; }
+  .logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 28px; list-style: none; }
+  .nav-links a { color: var(--muted); font-size: 0.95rem; transition: color .2s; }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ---------- HERO ---------- */
+  .hero { padding: 90px 0 70px; }
+  .hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 50px; align-items: center; }
+  .status {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 14px; border: 1px solid var(--accent); border-radius: 50px;
+    color: var(--accent); font-size: 0.85rem; margin-bottom: 22px;
+  }
+  .status .dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; animation: pulse 1.6s infinite; }
+  @keyframes pulse { 50% { opacity: .3; } }
+  .hero h1 { font-size: clamp(2.4rem, 6vw, 4rem); margin-bottom: 14px; }
+  .hero h1 .grad {
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .hero p { color: var(--muted); font-size: 1.1rem; max-width: 520px; margin-bottom: 30px; }
+  .btns { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn {
+    padding: 13px 26px; border-radius: 10px; font-weight: 600; font-size: 0.95rem;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .btn-primary { background: var(--accent); color: #04130e; }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(34, 211, 166, .3); }
+  .btn-outline { border: 1px solid var(--line); }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ---------- PHOTO ---------- */
+  .photo-wrap { position: relative; justify-self: center; }
+  .photo-wrap::before {
+    content: ""; position: absolute; inset: -12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-radius: 28px; transform: rotate(-4deg); opacity: .6;
+  }
+  .photo {
+    position: relative; width: 300px; height: 360px; border-radius: 24px;
+    background: var(--card); border: 2px dashed var(--line);
+    overflow: hidden; display: flex; align-items: center; justify-content: center;
+  }
+  .photo img { width: 100%; height: 100%; object-fit: cover; }
+  .photo .placeholder { text-align: center; color: var(--muted); padding: 20px; font-size: 0.9rem; }
+  .photo .placeholder strong { display: block; font-size: 3rem; color: var(--accent); font-family: 'Space Grotesk', sans-serif; }
+
+  /* ---------- SECTIONS ---------- */
+  section { padding: 70px 0; }
+  .section-tag { color: var(--accent); font-size: 0.85rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+  .section-title { font-size: 2.2rem; margin: 8px 0 36px; }
+
+  /* About */
+  .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 40px; }
+  .about-text p { color: var(--muted); margin-bottom: 16px; font-size: 1.05rem; }
+  .facts { display: grid; gap: 12px; }
+  .fact {
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 14px 18px; display: flex; justify-content: space-between; gap: 12px;
+  }
+  .fact span:first-child { color: var(--muted); }
+  .fact span:last-child { font-weight: 600; text-align: right; }
+
+  /* Skills */
+  .skills { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 18px; }
+  .skill {
+    background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 22px;
+    transition: border-color .2s, transform .2s;
+  }
+  .skill:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .skill .icon { font-size: 1.8rem; margin-bottom: 10px; }
+  .skill h3 { font-size: 1.15rem; margin-bottom: 6px; }
+  .skill p { color: var(--muted); font-size: 0.92rem; }
+
+  /* Projects */
+  .projects { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 22px; }
+  .project { background: var(--card); border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  .project-img {
+    height: 170px; display: flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #18324a, #10261f); color: var(--muted); font-size: 0.9rem;
+  }
+  .project-img img { width: 100%; height: 100%; object-fit: cover; }
+  .project-body { padding: 20px; }
+  .project-body h3 { margin-bottom: 6px; }
+  .project-body p { color: var(--muted); font-size: 0.92rem; margin-bottom: 14px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .tags span { font-size: 0.78rem; padding: 4px 10px; border-radius: 6px; background: rgba(34, 211, 166, .1); color: var(--accent); }
+  .project-body a { color: var(--accent); font-weight: 600; font-size: 0.9rem; }
+
+  /* Hire / Contact */
+  .hire {
+    background: linear-gradient(135deg, rgba(34, 211, 166, .12), rgba(59, 130, 246, .12));
+    border: 1px solid var(--line); border-radius: 24px; padding: 50px 30px; text-align: center;
+  }
+  .hire h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 12px; }
+  .hire p { color: var(--muted); margin-bottom: 28px; }
+  .hire .btns { justify-content: center; }
+  .phone { font-family: 'Space Grotesk', sans-serif; font-size: 1.6rem; color: var(--accent); margin-bottom: 26px; display: block; }
+
+  footer { border-top: 1px solid var(--line); padding: 26px 0; text-align: center; color: var(--muted); font-size: 0.9rem; }
+
+  /* ---------- MOBILE ---------- */
+  @media (max-width: 800px) {
+    .hero-grid, .about-grid { grid-template-columns: 1fr; }
+    .photo-wrap { order: -1; }
+    .photo { width: 240px; height: 290px; }
+    .nav-links { gap: 16px; }
+    .nav-links li:nth-child(n+3) { display: none; }
+    .hero { padding-top: 50px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav>
+  <div class="container nav-inner">
+    <a href="#home" class="logo">Eazy<span>Cash</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ================= HERO ================= -->
+<header class="hero" id="home">
+  <div class="container hero-grid">
+    <div>
+      <div class="status"><span class="dot"></span> Available for hire</div>
+      <h1>Hi, I'm <span class="grad">EazyCash</span><br>Web Developer</h1>
+      <p>I build clean, fast and responsive websites. Computer Science student at AE-FUNAI who loves writing code and turning ideas into real products.</p>
+      <div class="btns">
+        <a href="#contact" class="btn btn-primary">Hire Me</a>
+        <a href="#projects" class="btn btn-outline">View My Work</a>
+      </div>
+    </div>
+
+    <div class="photo-wrap">
+      <div class="photo">
+        <!-- =====================================================
+             ✏️ EDIT HERE: PUT YOUR PICTURE
+             1. Save your photo in the SAME folder as this file
+                (for example: my-photo.jpg)
+             2. Delete the <div class="placeholder"> ... </div> block below
+             3. Remove the comment marks around the <img> line, so it reads:
+                <img src="my-photo.jpg" alt="EazyCash">
+             ===================================================== -->
+
+        <!-- <img src="my-photo.jpg" alt="EazyCash"> -->
+
+        <div class="placeholder">
+          <strong>EC</strong>
+          Your photo goes here
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= ABOUT ================= -->
+<section id="about">
+  <div class="container">
+    <div class="section-tag">About Me</div>
+    <h2 class="section-title">Who I am</h2>
+    <div class="about-grid">
+      <div class="about-text">
+        <!-- ✏️ EDIT HERE: change or add to your story -->
+        <p>I'm EazyCash, a 20-year-old web developer from Ebonyi State, Nigeria. I'm currently in 300 Level studying Computer Science at Alex Ekwueme Federal University Ndufu-Alike (AE-FUNAI).</p>
+        <p>Writing code isn't just my course, it's my hobby. I enjoy building websites that look good, work smoothly on every device, and solve real problems.</p>
+        <p>I'm ready to be hired and eager to work on new projects, whether it's a full-time role, an internship, or freelance work.</p>
+      </div>
+      <div class="facts">
+        <!-- ✏️ EDIT HERE: your quick facts -->
+        <div class="fact"><span>Name</span><span>EazyCash</span></div>
+        <div class="fact"><span>Age</span><span>20</span></div>
+        <div class="fact"><span>School</span><span>AE-FUNAI</span></div>
+        <div class="fact"><span>Course</span><span>Computer Science</span></div>
+        <div class="fact"><span>Level</span><span>300 Level</span></div>
+        <div class="fact"><span>From</span><span>Ebonyi State, Nigeria</span></div>
+        <div class="fact"><span>Hobby</span><span>Writing code</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SKILLS ================= -->
+<section id="skills">
+  <div class="container">
+    <div class="section-tag">What I Do</div>
+    <h2 class="section-title">My skills</h2>
+    <div class="skills">
+      <!-- ✏️ EDIT HERE: add, remove or rename skills. Copy one <div class="skill"> block to add another. -->
+      <div class="skill">
+        <div class="icon">🧱</div>
+        <h3>HTML</h3>
+        <p>Clean, well-structured and accessible page markup.</p>
+      </div>
+      <div class="skill">
+        <div class="icon">🎨</div>
+        <h3>CSS</h3>
+        <p>Modern, responsive layouts that look great on phones and desktops.</p>
+      </div>
+      <div class="skill">
+        <div class="icon">⚡</div>
+        <h3>JavaScript</h3>
+        <p>Interactive features that bring websites to life.</p>
+      </div>
+      <div class="skill">
+        <div class="icon">📱</div>
+        <h3>Responsive Design</h3>
+        <p>Websites that work perfectly on every screen size.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PROJECTS ================= -->
+<section id="projects">
+  <div class="container">
+    <div class="section-tag">Portfolio</div>
+    <h2 class="section-title">Projects I've built</h2>
+    <div class="projects">
+      <!-- ✏️ EDIT HERE: replace with your real projects.
+           For a project picture, replace the text inside <div class="project-img"> with:
+           <img src="project1.jpg" alt="Project name">
+           Put your live link inside href="..." -->
+      <div class="project">
+        <div class="project-img">Project screenshot</div>
+        <div class="project-body">
+          <h3>Project One</h3>
+          <p>Short description of what this project does and the problem it solves.</p>
+          <div class="tags"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
+          <a href="#">View Project →</a>
+        </div>
+      </div>
+      <div class="project">
+        <div class="project-img">Project screenshot</div>
+        <div class="project-body">
+          <h3>Project Two</h3>
+          <p>Short description of what this project does and the problem it solves.</p>
+          <div class="tags"><span>HTML</span><span>CSS</span></div>
+          <a href="#">View Project →</a>
+        </div>
+      </div>
+      <div class="project">
+        <div class="project-img">Project screenshot</div>
+        <div class="project-body">
+          <h3>Project Three</h3>
+          <p>Short description of what this project does and the problem it solves.</p>
+          <div class="tags"><span>JavaScript</span></div>
+          <a href="#">View Project →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CONTACT / HIRE ================= -->
+<section id="contact">
+  <div class="container">
+    <div class="hire">
+      <h2>Ready to work together?</h2>
+      <p>I'm available for hire. Call or send me a message on WhatsApp.</p>
+      <!-- ✏️ EDIT HERE: your phone number -->
+      <a href="tel:+2347045200361" class="phone">0704 520 0361</a>
+      <div class="btns">
+        <a href="tel:+2347045200361" class="btn btn-primary">📞 Call Me</a>
+        <a href="https://wa.me/2347045200361" target="_blank" class="btn btn-outline">💬 WhatsApp</a>
+        <!-- ✏️ OPTIONAL: add email, e.g.
+        <a href="mailto:you@example.com" class="btn btn-outline">✉️ Email</a> -->
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    © <span id="year"></span> EazyCash. Built with code &amp; passion.
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
